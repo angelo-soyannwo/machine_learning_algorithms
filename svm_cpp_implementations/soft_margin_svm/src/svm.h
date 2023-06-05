@@ -11,10 +11,10 @@ class SoftMargin_SVM{
 		bool verbose;
 		std::vector<double> w;
 		double b;
-		std::vector<std::vector<double>> xs;
+		std::vector<std::vector<double> > xs;
 		std::vector<int> ys;
-		std::vector<double> alphas_s;
-		std::vector<std::vector<double>> xs_in;
+		std::vector<double> alpha_s;
+		std::vector<std::vector<double> > xs_in;
 		std::vector<int> ys_in;
 		std::vector<double> alpha_s_in;
 
@@ -25,16 +25,16 @@ class SoftMargin_SVM{
 
 
 		double accuracy;
-		double accuracy_a;
-		double accuracy_b;
+		double accuracy_c1;
+		double accuracy_c2;
 		double auroc;
-		size_t correct_a;
-		size_t correct_b;
+		size_t correct_c1;
+		size_t correct_c2;
 
 
 		SoftMargin_SVM() = delete;
 		// not sure about _=
-		SoftMargin_SVM(const bool verbose_=true)
+		SoftMargin_SVM(const bool verbose = true);
 
 		void train(const std::vector<std::vector<double>> class1_data, const std::vector<std::vector<double>> class2_data, const size_t D, const double C, const double lr, const double limit=0.0001);
 

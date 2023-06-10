@@ -21,7 +21,7 @@
 
 	
 		double answer = 0.0;
-		for(i = 0; i!=x1.size(); i++){
+		for(i = 0; i<x1.size(); i++){
 			answer += x1[i] * x2[i];
 		}
 
@@ -38,8 +38,9 @@
 
 	void SoftMargin_SVM::train(const std::vector<std::vector<double>> class1_data, const std::vector<std::vector<double>> class2_data, const size_t D, const double C, const double lr, const double limit){
 
-		constexpr double eps = 0.0000001;
+		constexpr double eps = 0.0001; //0.0000001;
 		
+
 		size_t i, j;
 		size_t N, Ns, Ns_in;
 		bool judge;
@@ -69,12 +70,12 @@
 		beta = 1.0;
 
 		this -> log("\n");
-		this -> log("//////////////////////////////Training\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n");
+		this -> log("//////////////////////////////Training//////////////////////////////\n");
 		
 		do {
 
 			judge = false;
-			error = 0;
+			error = 0.0;
 
 			for (i = 0; i<N; i++){
 
@@ -85,7 +86,7 @@
 
 				term2 = 0.0;
 				for (j=0; j<N; j++){
-					term2 = alpha[j] * (double)y[i] * (double) y[j];
+					term2 += alpha[j] * (double)y[i] * (double) y[j];
 				}
 
 				delta = 1 - term1 - beta*term2;
@@ -98,7 +99,7 @@
 				else if (alpha[i]>C){
 					alpha[i] = C;
 				}
-				else if (delta > limit){
+				else if (std::abs(delta) > limit){
 					judge = true;
 					error = error + std::abs(delta) - limit;
 				}
@@ -138,9 +139,9 @@
 				Ns++;
 			}
 			else if(alpha[i] >= C - eps) {
-				this -> ys.push_back(y[i]);
-				this -> xs.push_back(x[i]);
-				this->alpha_s.push_back(alpha[i]);
+				this -> ys_in.push_back(y[i]);
+				this -> xs_in.push_back(x[i]);
+				this->alpha_s_in.push_back(alpha[i]);
 				Ns_in++;	
 			}
 		}
@@ -151,20 +152,23 @@
 		// Description for weights
 		this->log("weight = [ ");
 		this->w = std::vector<double>(D, 0.0);
-		for (j=0; j < D; j++){
+
+		for (size_t z=0; z < D; z++){
+		
 
 			for (i = 0; i < Ns; i++){
-				this->w[j] += alpha_s[i] * (double)ys[i] * xs[i][j];
+				this->w[z] += alpha_s[i] * (double)ys[i] * xs[i][z];
 			}
 
 			for (i = 0; i < Ns_in; i++){
-				this->w[j] += alpha_s_in[i] * (double)ys_in[i] * xs_in[i][j];
+				this->w[z] += alpha_s_in[i] * (double)ys_in[i] * xs_in[i][z];
 			}
-			this->log(std::to_string(this->w[j]) + " ");
+			this->log(std::to_string(this->w[z]) + " ");
 		}
+
 		this->log("]\n");
 
-		// (4.3) Description for b
+		// Description for b
 		this->b = 0.0;
 		for (i = 0; i < Ns; i++){
 			this->b += (double)this->ys[i] - this->dot(this->w, this->xs[i]);
@@ -190,7 +194,7 @@
 		
 		this -> correct_c2 = 0;
 		for (i=0; i<class2_data.size(); i++){
-			if (this->g(class2_data[i]) == 1){
+			if (this->g(class2_data[i]) == -1){
 				this->correct_c2++ ;
 			}
 		}

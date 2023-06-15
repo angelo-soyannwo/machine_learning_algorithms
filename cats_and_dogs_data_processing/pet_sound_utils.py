@@ -13,17 +13,16 @@ def main():
 	sizes = []
 	directory = 'cats_dogs'
 	count = 0
-"""
-	#code snippets used to make the audio data csv
-	import csv
-	with open('audio_data.csv', 'w', newline='') as file:
-		writer = csv.writer(file)
-		field = ["#", "filename", "length"]
-		writer.writerow(field)
-		writer.writerow([count, filename, audio_as_np_float32.shape[0]])
-	file.close()			
-"""
-
+	"""
+		#code snippets used to make the audio data csv
+		import csv
+		with open('audio_data.csv', 'w', newline='') as file:
+			writer = csv.writer(file)
+			field = ["#", "filename", "length"]
+			writer.writerow(field)
+			writer.writerow([count, filename, audio_as_np_float32.shape[0]])
+		file.close()			
+	"""
 	for filename in os.listdir('cats_dogs'):
 
 		try:

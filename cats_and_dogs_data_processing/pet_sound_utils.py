@@ -5,7 +5,7 @@ import numpy
 import wave
 
 
-def main():
+def display_data():
 	#extract_dataset('train_test_split.csv')
 	i=0
 	max_size = 0

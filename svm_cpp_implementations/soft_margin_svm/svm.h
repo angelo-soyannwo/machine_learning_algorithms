@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include "complex.h"
 
 class SoftMargin_SVM{
 
@@ -18,7 +19,16 @@ class SoftMargin_SVM{
 		std::vector<int> ys_in;
 		std::vector<double> alpha_s_in;
 
+		std::vector<std::vector<Complex> > xs_complex;
+		std::vector<std::vector<Complex> > xs_in_complex;
+
 		double dot(const std::vector<double> x1, const std::vector<double> x2);
+
+		Complex dot(const std::vector<Complex> x1, const std::vector<Complex> x2);
+
+		double dot(const std::vector<double> x1, const std::vector<Complex> x2);
+
+
 		void log(const std::string str);
 
 	public:
@@ -38,9 +48,16 @@ class SoftMargin_SVM{
 
 		void train(const std::vector<std::vector<double>> class1_data, const std::vector<std::vector<double>> class2_data, const size_t D, const double C, const double lr, const double limit=0.0001);
 
+		void train(const std::vector<std::vector<Complex>> class1_data, const std::vector<std::vector<Complex>> class2_data, const size_t D, const double C, const double lr, const double limit=0.0001);
+
 		void test(const std::vector<std::vector<double>> class1_data, const std::vector<std::vector<double>> class2_data);
+		void test(const std::vector<std::vector<Complex>> class1_data, const std::vector<std::vector<Complex>> class2_data);
+
 		double f(const std::vector<double> x);
+		double f(const std::vector<Complex> x);
+
 		double g(const std::vector<double> x);
+		double g(const std::vector<Complex> x);
 		
 };
 
